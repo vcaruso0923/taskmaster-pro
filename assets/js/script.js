@@ -162,7 +162,7 @@ $("#task-form-modal").on("shown.bs.modal", function () {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function () {
+$("#task-form-modal .btn-save").click(function () {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -199,12 +199,20 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function (event) {
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag")
   },
   deactivate: function (event) {
+    $(this).removeClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag")
   },
   over: function (event) {
+    $(this).addClass("dropover-active");
+    $(".bottom-trash").addClass("bottom-trash-active")
   },
   out: function (event) {
+    $(this).removeClass("dropover-active");
+    $(".bottom-trash").removeClass("bottom-trash-active")
   },
   update: function (event) {
   },
@@ -261,10 +269,8 @@ $("#modalDueDate").datepicker({
 //audit tasks
 var auditTask = function(taskEl) {
   var date = $(taskEl).find("span").text().trim();
-  console.log(date);
 
   var time = moment(date, "L").set("hour", 17);
-  console.log(time);
 
   //remove any old classes from element
   $(taskEl).removeClass("list-group-item-warning list-group-item-danger");
@@ -276,6 +282,13 @@ var auditTask = function(taskEl) {
     $(taskEl).addClass("list-group-item-warning");
   }
 }
+
+//periodic audit
+setInterval(function () {
+  $(".card .list-group-item").each(function (el) {
+    auditTask(el);
+  });
+}, (1000 * 60) * 30);
 
 // load tasks for the first time
 loadTasks();
