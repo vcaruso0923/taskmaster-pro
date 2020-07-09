@@ -1,4 +1,4 @@
-# Taskmaster-Pro
+# Taskmaster Pro
 
 ## Overview
 A Kanban App to plan out and keep track of various tasks. 
